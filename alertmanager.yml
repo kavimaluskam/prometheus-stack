@@ -1,0 +1,42 @@
+global:
+  smtp_from: 'kavimaluskam@gmail.com'
+  smtp_smarthost: smtp.gmail.com:587
+  smtp_auth_username: 'kavimaluskam@gmail.com'
+  smtp_auth_identity: 'kavimaluskam@gmail.com'
+  smtp_auth_password: 'fxggyvkezwevzyhj'
+
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 5s
+  group_interval: 10s
+  repeat_interval: 8400h
+  # receiver: scale-up
+  receiver: mail2me
+  routes:
+  - match:
+      # receiver: scale-up
+      receiver: mail2me
+      severity: major
+
+inhibit_rules:
+- source_match:
+    severity: 'critical'
+  target_match:
+    severity: 'warning'
+  equal: ['alertname', 'cluster', 'service']
+
+receivers:
+- name: 'scale-up'
+  webhook_configs:
+    - url: http://gateway:8080/system/alert
+      send_resolved: true
+
+- name: 'mail2me'
+  email_configs:
+  - to: 'kavimaluskam@gmail.com'
+    send_resolved: false
+
+- name: 'mail2alex'
+  email_configs:
+  - to: 'kavimaluskam@gmail.com'
+    send_resolved: false

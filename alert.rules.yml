@@ -1,0 +1,61 @@
+groups:
+- name: prometheus/alert.rules
+  rules:
+
+  - alert: service_down
+    expr: up == 0
+    labels:
+      serverity: critical
+    annotations:
+      description: Lost server connection on {{ $labels.instance }}
+      summary: Lost server connection on {{ $labels.instance }}
+
+  - alert: HighAvgCPULoadingShort
+    expr: node_load1/(count(node_cpu{mode="idle"}) without (cpu,mode)) > 0.8
+    for: 60s
+    labels:
+      serverity: major
+      value: '{{$value}}'
+    annotations:
+      description: High average CPU loading on {{ $labels.instance }} for 1 minute
+      summary: High average CPU loading on {{ $labels.instance }} for 1 minute
+
+  - alert: HighAvgCPULoadingMedium
+    expr: node_load5/(count(node_cpu{mode="idle"}) without (cpu,mode)) > 0.8
+    for: 60s
+    labels:
+      serverity: warning
+      value: '{{$value}}'
+    annotations:
+      description: High average CPU loading on {{ $labels.instance }} for 5 minutes
+      summary: High average CPU loading on {{ $labels.instance }} for 5 minutes
+    
+  - alert: HighAvgCPULoadingLong
+    expr: node_load1/(count(node_cpu{mode="idle"}) without (cpu,mode)) > 0.8
+    for: 60s
+    labels:
+      serverity: critical
+      value: '{{$value}}'
+    annotations:
+      description: High average CPU loading on {{ $labels.instance }} for 15 minutes
+      summary: High average CPU loading on {{ $labels.instance }} for 15 minutes
+
+  - alert: MemoryHighUsage
+    expr: node_memory_MemFree/node_memory_MemTotal < 0.1
+    for: 60s
+    labels:
+      serverity: major
+      value: '{{$value}}'
+    annotations:
+      description: High meomry usage on {{ $labels.instance }}
+      summary: High memory usage total on {{ $labels.instance }}
+
+  - alert: MemoryExtremeUsage
+    expr: node_memory_MemFree/node_memory_MemTotal < 0.05
+    for: 60s
+    labels:
+      serverity: critical
+      value: '{{$value}}'
+    annotations:
+      description: Extreme meomry usage on {{ $labels.instance }}
+      summary: Extreme memory usage total on {{ $labels.instance }}

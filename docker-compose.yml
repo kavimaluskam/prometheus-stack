@@ -1,0 +1,33 @@
+version: "3"
+services:
+  prometheus:
+    image: quay.io/prometheus/prometheus:latest
+    ports:
+     - 9090:9090
+    volumes:
+     - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+     - "./alert.rules.yml:/etc/prometheus/alert.rules.yml"
+    command:
+        - '--web.enable-lifecycle'
+        - '--config.file=/etc/prometheus/prometheus.yml'
+    depends_on:
+        - alertmanager
+
+  alertmanager:
+    image: quay.io/prometheus/alertmanager:latest
+    environment:
+        no_proxy: "gateway"
+    # Uncomment the following port mapping if you wish to expose the Prometheus
+    #  Alertmanager UI.
+    ports:
+        - 9093:9093
+    volumes:
+     - "./alertmanager.yml:/alertmanager.yml"
+    command:
+        - '--config.file=/alertmanager.yml'
+        - '--storage.path=/alertmanager'
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+        - "3000:3000"
