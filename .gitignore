@@ -190,6 +190,7 @@ ENV/
 # End of https://www.gitignore.io/api/osx,python,node,pycharm
 
 ### Custom ###
-
+grafana/storage/*
+!grafana/storage/.gitkeep
 # Docker Related
 docker-compose.override.yml

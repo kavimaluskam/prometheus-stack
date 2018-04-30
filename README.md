@@ -14,7 +14,7 @@ Running on host server by docker compose
 ### Grafana Setup
 1. Default auth is admin/admin
 2. Add data source on http://prometheus:9090
-3. Import default metrics dashboard as via `grafana-theme/node-exporter-server-metrics-rev6.json` 
+3. Import default metrics dashboard as via `grafana/theme/node-exporter-server-metrics-rev6.json` 
 
 ### Update alert rules
 

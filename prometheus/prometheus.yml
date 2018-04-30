@@ -24,7 +24,8 @@ scrape_configs:
   - job_name: 'prometheus-host'
     static_configs:
       - targets: ['localhost:9090']
+      
   # Add client here as:
-  # - job_name: 'CLIENT_PROJECT/SERVER_PROVIDER/CLIENT_INSTANCE'
+  # - job_name: 'PROJECT/SERVER_PROVIDER/DEPLOYMENT_INSTANCE'
   #   static_configs:
-  #   - targets: ['CLIENT_HOST:9090']
+  #   - targets: ['INSTANCE_HOST:9100']

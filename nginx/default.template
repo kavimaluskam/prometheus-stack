@@ -1,0 +1,29 @@
+upstream prometheus_core {
+  server prometheus:9090; 
+}
+
+upstream prometheus_alert_manager {
+    server alertmanager:9093;
+}
+
+upstream grafana_core {
+    server grafana:3000;
+}
+
+server {
+  listen $STACK_PORT;
+  server_name localhost;
+
+  location /$PROMETHEUS_SUB_PATH/ {
+    proxy_pass http://prometheus_core/; 
+    proxy_redirect http://prometheus_core/ http://localhost/prometheus/; 
+  }
+  location /$ALERTMANAGER_SUB_PATH/ {
+    proxy_pass http://prometheus_alert_manager/;
+    proxy_redirect http://prometheus_alert_manager/ http://localhost/alert_manager/; 
+  }
+  location /$GRAFANA_SUB_PATH/ {
+    proxy_pass http://grafana_core/;
+    proxy_redirect http://grafana_core/ http://localhost/grafana/; 
+  }
+}
